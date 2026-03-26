@@ -50,10 +50,10 @@ This project uses Gradle. To build the mod yourself:
 
 ```sh
 # Clone the repository
-git clone https://github.com/your-username/MyBaritoneMod.git
+git clone https://github.com/your-username/baritone-command-hub.git
 
 # Navigate to the workspace directory
-cd MyBaritoneMod
+cd baritone-command-hub
 
 # Build the Forge project
 gradlew build
