@@ -1,4 +1,4 @@
-package com.example.examplemod;
+package baritonecommandhub;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -10,24 +10,25 @@ import java.util.List;
 /**
  * Forge configuration holder for the Baritone Command Hub mod.
  *
- * <p>Manages two persistent lists backed by {@link ForgeConfigSpec}:
+ * <p>
+ * Manages two persistent lists backed by {@link ForgeConfigSpec}:
  * <ul>
- *   <li><b>Saved commands</b> — user-bookmarked Baritone commands, persisted
- *       indefinitely until manually deleted.</li>
- *   <li><b>History commands</b> — a Most-Recently-Used (MRU) ring buffer
- *       of the last 100 executed commands, navigable via Page Up / Page Down
- *       in {@link BaritoneCommandScreen}.</li>
+ * <li><b>Saved commands</b> — user-bookmarked Baritone commands, persisted
+ * indefinitely until manually deleted.</li>
+ * <li><b>History commands</b> — a Most-Recently-Used (MRU) ring buffer
+ * of the last 100 executed commands, navigable via Page Up / Page Down
+ * in {@link BaritoneCommandScreen}.</li>
  * </ul>
  *
- * <p>Both lists are flushed to disk via {@code SPEC.save()} after every
+ * <p>
+ * Both lists are flushed to disk via {@code SPEC.save()} after every
  * mutation, ensuring survival across game restarts.
  *
  * @see BaritoneCommandScreen
  * @see CommandManagerScreen
  */
 @Mod.EventBusSubscriber(modid = BaritoneCommandHub.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class Config
-{
+public class Config {
     private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
     private static final ForgeConfigSpec.ConfigValue<List<? extends String>> SAVED_COMMANDS = BUILDER
@@ -49,7 +50,8 @@ public class Config
     /**
      * Synchronises the in-memory lists with the on-disk config values.
      *
-     * <p>Invoked automatically by Forge whenever the config file is loaded
+     * <p>
+     * Invoked automatically by Forge whenever the config file is loaded
      * or reloaded. The raw immutable lists from the spec are copied into
      * mutable {@link java.util.ArrayList} instances so that runtime
      * mutations (add / remove) can be performed freely.
@@ -57,8 +59,7 @@ public class Config
      * @param event the config lifecycle event
      */
     @SubscribeEvent
-    static void onLoad(final ModConfigEvent event)
-    {
+    static void onLoad(final ModConfigEvent event) {
         savedCommands = new java.util.ArrayList<>(SAVED_COMMANDS.get());
         historyCommands = new java.util.ArrayList<>(HISTORY_COMMANDS.get());
     }
@@ -66,7 +67,8 @@ public class Config
     /**
      * Persists a Baritone command to the saved-commands list.
      *
-     * <p>Duplicate entries are silently ignored to prevent clutter in the
+     * <p>
+     * Duplicate entries are silently ignored to prevent clutter in the
      * {@link CommandManagerScreen} UI.
      *
      * @param cmd the command string to save; must not be {@code null}
@@ -78,7 +80,7 @@ public class Config
             SPEC.save();
         }
     }
-    
+
     /**
      * Removes all saved commands and flushes the empty list to disk.
      */
@@ -91,7 +93,8 @@ public class Config
     /**
      * Records an executed command into the MRU history ring.
      *
-     * <p>If the command already exists in the history it is first removed,
+     * <p>
+     * If the command already exists in the history it is first removed,
      * then re-appended at the tail so the most recent invocation always
      * occupies the latest position. When the history exceeds 100 entries,
      * the oldest entry (head) is evicted in FIFO order.

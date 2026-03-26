@@ -1,4 +1,4 @@
-package com.example.examplemod;
+package baritonecommandhub;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
@@ -13,13 +13,15 @@ import org.lwjgl.glfw.GLFW;
 /**
  * Client-side event wiring for the Baritone Command Hub mod.
  *
- * <p>Encapsulates key-binding registration and runtime key-press handling
- * in two nested static classes, each subscribing to a different Forge event bus:
+ * <p>
+ * Encapsulates key-binding registration and runtime key-press handling
+ * in two nested static classes, each subscribing to a different Forge event
+ * bus:
  * <ul>
- *   <li>{@link ClientModBusEvents} — {@code MOD} bus, registers the key mapping
- *       during the client setup phase.</li>
- *   <li>{@link ClientForgeBusEvents} — {@code FORGE} bus, listens for per-tick
- *       key-input events at runtime.</li>
+ * <li>{@link ClientModBusEvents} — {@code MOD} bus, registers the key mapping
+ * during the client setup phase.</li>
+ * <li>{@link ClientForgeBusEvents} — {@code FORGE} bus, listens for per-tick
+ * key-input events at runtime.</li>
  * </ul>
  *
  * @see BaritoneCommandScreen
@@ -29,7 +31,8 @@ public class ClientEvents {
     /**
      * Default key binding that opens the Baritone command GUI.
      *
-     * <p>Bound to {@code GLFW_KEY_V} by default; players can rebind it
+     * <p>
+     * Bound to {@code GLFW_KEY_V} by default; players can rebind it
      * through the standard Minecraft controls menu under the
      * {@code "category.yourmod.general"} category.
      */
@@ -37,14 +40,14 @@ public class ClientEvents {
             "key.yourmod.open_gui",
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_V,
-            "category.yourmod.general"
-    );
+            "category.yourmod.general");
 
     /**
      * MOD-bus subscriber responsible for registering key mappings during
      * the client mod-loading phase.
      *
-     * <p>Forge requires key mappings to be registered via
+     * <p>
+     * Forge requires key mappings to be registered via
      * {@link RegisterKeyMappingsEvent} on the MOD bus so they appear in
      * the controls settings screen.
      */
@@ -59,7 +62,8 @@ public class ClientEvents {
     /**
      * FORGE-bus subscriber that handles runtime key-input events.
      *
-     * <p>When the bound key is pressed (default {@code V}), opens a new
+     * <p>
+     * When the bound key is pressed (default {@code V}), opens a new
      * {@link BaritoneCommandScreen} instance. Uses
      * {@link KeyMapping#consumeClick()} to prevent the event from being
      * processed multiple times in the same tick.
