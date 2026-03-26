@@ -91,6 +91,37 @@ public class Config {
     }
 
     /**
+     * Updates an existing saved command at the given index.
+     *
+     * <p>
+     * If the index is out of bounds or the new command is empty, the
+     * operation is ignored.
+     *
+     * @param index the position in {@link #savedCommands} to update
+     * @param newCmd the new command string; must not be empty
+     */
+    public static void updateCommand(int index, String newCmd) {
+        if (index >= 0 && index < savedCommands.size() && !newCmd.isEmpty()) {
+            savedCommands.set(index, newCmd);
+            SAVED_COMMANDS.set(savedCommands);
+            SPEC.save();
+        }
+    }
+
+    /**
+     * Deletes a saved command at the specified index.
+     *
+     * @param index the position in {@link #savedCommands} to remove
+     */
+    public static void deleteCommand(int index) {
+        if (index >= 0 && index < savedCommands.size()) {
+            savedCommands.remove(index);
+            SAVED_COMMANDS.set(savedCommands);
+            SPEC.save();
+        }
+    }
+
+    /**
      * Records an executed command into the MRU history ring.
      *
      * <p>

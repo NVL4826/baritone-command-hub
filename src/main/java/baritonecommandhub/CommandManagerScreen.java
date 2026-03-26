@@ -81,21 +81,28 @@ public class CommandManagerScreen extends Screen {
             final String cmd = saved.get(i);
             int yOffset = startY + (i - startIndex) * 25;
 
-            String displayCmd = cmd.length() > 30 ? cmd.substring(0, 27) + "..." : cmd;
+            String displayCmd = cmd.length() > 25 ? cmd.substring(0, 22) + "..." : cmd;
 
+            // Execute Button
             this.addRenderableWidget(Button.builder(Component.literal(displayCmd), button -> {
                 if (BaritoneAPI.getProvider().getPrimaryBaritone() != null) {
                     BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute(cmd);
                     Config.addHistoryCommand(cmd);
                 }
                 this.minecraft.setScreen(null);
-            }).bounds(this.width / 2 - 150, yOffset, 200, 20).build());
+            }).bounds(this.width / 2 - 150, yOffset, 160, 20).build());
 
+            // Edit Button: Final to be used in lambda
+            final int editIndex = i;
+            this.addRenderableWidget(Button.builder(Component.literal("Edit"), button -> {
+                this.minecraft.setScreen(new EditCommandScreen(this, editIndex, cmd));
+            }).bounds(this.width / 2 + 15, yOffset, 60, 20).build());
+
+            // Delete Button
             this.addRenderableWidget(Button.builder(Component.literal("Delete"), button -> {
-                Config.savedCommands.remove(cmd);
-                Config.SPEC.save();
+                Config.deleteCommand(editIndex);
                 buildUI();
-            }).bounds(this.width / 2 + 60, yOffset, 90, 20).build());
+            }).bounds(this.width / 2 + 80, yOffset, 70, 20).build());
         }
 
         int navY = this.height - 40;
@@ -129,7 +136,7 @@ public class CommandManagerScreen extends Screen {
         int totalPages = Math.max(1, (int) Math.ceil((double) totalItems / ITEMS_PER_PAGE));
 
         guiGraphics.drawCenteredString(this.font, "Page " + (currentPage + 1) + " / " + totalPages, this.width / 2,
-                this.height - 35, 0xAAAAAA);
+                this.height - 60, 0xAAAAAA);
 
         super.render(guiGraphics, mouseX, mouseY, partialTick);
     }
